@@ -1,14 +1,44 @@
 .grid-container {
     display: grid;
-    grid-template-columns: auto auto auto;
-    
+    grid-template-columns: 50% 50%;
+    grid-auto-rows: 1fr;
     padding: 10px;
   }
   .grid-item {
+    
     background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
     padding: 20px;
-    margin: 0% 33% 0% 0%;
+    margin-top: 30px;
+    margin-left: 30px;
     font-size: 30px;
+    /*text-align: center;*/
+  }
+
+  #computerStore {
+    margin: 30px 50px;
+  }
+
+  #title {
+    text-align: center;
+  }
+
+  #firstRow {
+    margin-top: 40px;
+  }
+
+  #secondRow {
+    margin-top: 60px;
+  }
+
+  #workButtons {
+    text-align: center;
+  }
+
+  #loanButton {
+    text-align: center;
+  }
+
+  #laptopDropdown {
     text-align: center;
   }
