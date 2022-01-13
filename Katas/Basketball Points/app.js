@@ -3,8 +3,8 @@ function points(twoPointers, threePointers) {
     twoPointers *= 2;
     threePointers *= 3;
     // Add the values together 
-    const sum = twoPointers + threePointers;
-    console.log(sum);
+    const finalScore = twoPointers + threePointers;
+    console.log(finalScore);
 }
 
 points(1, 1);
