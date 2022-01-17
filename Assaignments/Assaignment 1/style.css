@@ -1,44 +1,60 @@
-.grid-container {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-auto-rows: 1fr;
-    padding: 10px;
-  }
-  .grid-item {
-    
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    margin-top: 30px;
-    margin-left: 30px;
-    font-size: 30px;
-    /*text-align: center;*/
-  }
+#computerStore {
+  position: relative;
+}
 
-  #computerStore {
-    margin: 30px 50px;
-  }
+#workerBalance{
+  display: flex;
+}
 
-  #title {
-    text-align: center;
-  }
+#workerBalanceAmount {
+  margin-left: auto;
+}
 
-  #firstRow {
-    margin-top: 40px;
-  }
+#workerLoan{
+  display: flex;
+  visibility: hidden;
+}
 
-  #secondRow {
-    margin-top: 60px;
-  }
+#workerLoanAmount {
+  margin-left: auto;
+}
 
-  #workButtons {
-    text-align: center;
-  }
+#payInfo p{
+  display: inline;
+}
 
-  #loanButton {
-    text-align: center;
-  }
+#payAmount {
+  float: right;
+}
 
-  #laptopDropdown {
-    text-align: center;
-  }
+#title {
+  text-align: center;
+}
+
+#firstRow {
+  margin-top: 40px;
+}
+
+#secondRow {
+  margin-top: 60px;
+}
+
+#loanButton {
+  text-align: center;
+}
+
+#workButtons {
+  text-align: center;
+}
+
+#repayLoan {
+  visibility: hidden;
+}
+
+#laptopDropdown {
+  text-align: center;
+}
+
+#workerLoan {
+  visibility: hidden;
+}

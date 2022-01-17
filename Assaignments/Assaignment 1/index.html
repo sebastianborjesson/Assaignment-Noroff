@@ -18,11 +18,57 @@
     </header>
     <div class="container">
         <div class="row justify-content-around" id="firstRow">
-            <include src="./bank.html"></include>
-            <include src="./work.html"></include>
+            <section class="col-md-4 border border-dark" id="bankSec">
+                <h2 id="title">Bank</h2>
+                <div id="workerBalance">
+                    <p>Balance</p>
+                    <p id="workerBalanceAmount"></p>
+                </div>
+                <div id="workerLoan">
+                    <p>Loan Amount</p>
+                    <p id="workerLoanAmount"></p>
+                </div>
+                <br>
+                <div id="loanButton">
+                    <button type="button" class="btn btn-info" onclick="loan()">Get a loan</button>
+                </div>
+            </section>
+            
+            <section div class="col-md-4 border border-dark" id="workSec">
+                <h2 id="title">Work</h2>
+                <div id="payInfo">
+                    <p>Pay</p>
+                    <p id="payAmount"></p>
+                </div>
+                <div id="workButtons">
+                    <button type="button" class="btn btn-primary" id="repayLoan" onclick="repayLoan()">Repay Loan</button>
+                    <button type="button" class="btn btn-success" onclick="deposit()">Deposit</button>
+                    <button type="button" class="btn btn-warning" onclick="work()">Work</button>
+                </div>
+            </section>
         </div>
         <div class="row justify-content-around" id="secondRow">
-            <include src="./laptops.html"></include>
+            
+            <section class="col-md-5 border border-dark">
+                <div class=>
+                    <h2 id="title">Laptops</h2>
+                    <div class="dropdown" id="laptopDropdown">
+                        <select name="laptops" id="laptopSelect">
+                            
+                        </select>
+                        <ul id="featureList">
+
+                        </ul>
+                </div>
+                    
+                </div>
+            </section>
+            <section class="col-md-6 border border-dark">
+                <div id="infoSection">
+                    <img src="" alt="" id="laptopImage">
+                </div>
+                <button type="button" class="btn btn-primary">Buy now</button>
+            </section>
         </div>
     </div>
 </body>
