@@ -5,7 +5,7 @@ function Worker(name, balance, pay, loanAmount) {
     this.loanAmount = loanAmount;
 }
 
-const johnDoe = new Worker('John Doe', 100, 100, 0);
+const johnDoe = new Worker('John Doe', 100000, 0, 0);
 const lapTopSelect = document.getElementById("laptopSelect");
 const featureList = document.getElementById("featureList");
 const infoSection = document.getElementById("infoSection");
@@ -23,16 +23,18 @@ payAmount.innerHTML = johnDoe.pay + currency;
 
 function loan() {
     let valueLoan = window.prompt("Add amount you wish to loan: ");
-    
+    console.log(valueLoan);
     // If you already have a loan
     // Prompt that you need to repay back the initial loan
-    if (johnDoe.loanAmount > 0) {
+    if (valueLoan == "" || valueLoan == 0) {
+        alert("You need to enter a value");
+    } else if (johnDoe.loanAmount > 0) {
         alert("You need to pay back your initial loan")    
     }
     // If there is a value of the loan
     // And the balance on the bank is not more than double the amount you wish to loan
     // Append the loan amount row and store it to the user
-    else if (valueLoan != null && valueLoan <= (johnDoe.balance * 2)) {
+    else if ((valueLoan != "" || valueLoan != 0) && valueLoan <= (johnDoe.balance * 2)) {
         // Show the loan amount block and update the value based on the loan
         workerLoan.style.visibility = "visible";
         workerLoanAmount.innerHTML = valueLoan + currency;
@@ -69,6 +71,7 @@ function work() {
 }
 
 function deposit() {
+    const deductionForLoanFactor = 0.1;
     // If no loan, add the value of Pay to your bank balance
     if (johnDoe.loanAmount <= 0) {
         johnDoe.balance += parseInt(johnDoe.pay);
@@ -76,12 +79,14 @@ function deposit() {
     } 
     else if (johnDoe.loanAmount > 0) {
         // 10% deduction on your loan if the user has an existing loan
-        johnDoe.loanAmount -= parseInt(johnDoe.pay) * 0.1;
+        johnDoe.loanAmount -= parseInt(johnDoe.pay) * deductionForLoanFactor;
+        johnDoe.balance -= parseInt(johnDoe.pay) * deductionForLoanFactor;
+        johnDoe.pay -= parseInt(johnDoe.pay) * deductionForLoanFactor;
         // Add the remaining 90% to your balance
-        johnDoe.balance += parseInt(johnDoe.pay) * 0.9;
+        johnDoe.balance += parseInt(johnDoe.pay);
         workerBalanceAmount.innerHTML = johnDoe.balance + currency;
         workerLoanAmount.innerHTML = johnDoe.loanAmount + currency;
-        if (johnDoe.loanAmount === 0) {
+        if (johnDoe.loanAmount <= 0) {
             workerLoan.style.visibility = "hidden";
             repayLoanButton.style.visibility = "hidden";
         }
@@ -143,7 +148,7 @@ function getAllLaptops () {
     }
 )}
     
-
+getAllLaptops();
 
 function listLaptops (laptops) {
     // Loop through the array of laptops and create option keys for each laptop in the select-box
@@ -153,12 +158,12 @@ function listLaptops (laptops) {
         laptopOption.innerText = singleLaptop.title;
         lapTopSelect.appendChild(laptopOption);
     }
-    // On the first object we invoke the listFeatures function (passing with the object) to print out it's specific features
+    // On the first object we invoke the listFeatures and InfoOnLaptop function (passing with the object) to print out it's specific features
     if(laptops[0]) {
         listFeatures(laptops[0])
         infoOnLaptop(laptops[0]);
     }
-    // We listen to a change of value in the selectbox. If it changes, we invoke listFeatures function (passing on the object) and change the features based on the laptop chosen
+    // We listen to a change of value in the selectbox. If it changes, we invoke listFeatures and InfoOnLaptop functions (passing on the object) and change the features based on the laptop chosen
     lapTopSelect.addEventListener("change", function() {
         featureList.innerHTML = "";
         for (let index2 = 0; index2 < laptops.length; index2++) {
@@ -177,7 +182,6 @@ function listFeatures (laptop) {
         lapTopFeature.innerText = feature;    
         featureList.appendChild(lapTopFeature);
     }
-
 }
 
 function infoOnLaptop (laptop) {
@@ -190,8 +194,7 @@ function infoOnLaptop (laptop) {
     imageTag.id = "laptopImage";
     imageTag.className = "img-fluid card-img-top";
     imageTag.style = "width: 40%; display: block; margin-left: auto; margin-right: auto;";
-    let imageUrl = "https://noroff-komputer-store-api.herokuapp.com/" + laptop.image;
-    imageTag.src = imageUrl;
+    imageTag.src = "https://noroff-komputer-store-api.herokuapp.com/" + laptop.image;
     infoSection.appendChild(imageTag);
     //Section for adding description for laptop
     const imageSection = document.createElement("div");
@@ -234,5 +237,4 @@ function buyComputer () {
 
 }
 
-getAllLaptops();
     

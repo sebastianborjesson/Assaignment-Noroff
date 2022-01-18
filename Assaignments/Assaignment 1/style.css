@@ -1,5 +1,11 @@
 #computerStore {
   position: relative;
+  background-color: GREY;
+  color: white;
+}
+
+#computerStore h1 {
+  margin-left: 10%;
 }
 
 #workerBalance{
@@ -43,12 +49,22 @@
   text-align: center;
 }
 
+#workSec {
+  position: relative;
+}
+
 #workButtons {
-  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 20.5%;
 }
 
 #repayLoan {
   visibility: hidden;
+}
+
+#laptopSelect {
+  margin-bottom: 8%;
 }
 
 #laptopDropdown {
@@ -61,4 +77,9 @@
 
 #buySection {
   text-align: center;
+}
+
+.card-img-top {
+  max-height: 30vh; /*not want to take all vertical space*/
+  object-fit: contain;/*show all image, autosized, no cut, in available space*/
 }
