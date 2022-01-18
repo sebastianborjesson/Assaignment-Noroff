@@ -6,10 +6,20 @@ function Worker(name, balance, pay, loanAmount) {
 }
 
 const johnDoe = new Worker('John Doe', 100, 100, 0);
+const lapTopSelect = document.getElementById("laptopSelect");
+const featureList = document.getElementById("featureList");
+const infoSection = document.getElementById("infoSection");
+const buySection = document.getElementById("buySection");
+const cardBody = document.getElementById("cardBody");
+const workerBalanceAmount = document.getElementById("workerBalanceAmount");
+const payAmount = document.getElementById("payAmount");
+const workerLoan = document.getElementById("workerLoan");
+const workerLoanAmount = document.getElementById("workerLoanAmount");
+const repayLoanButton = document.getElementById("repayLoan");
 
 const currency = " kr";
-document.getElementById("workerBalanceAmount").innerHTML = johnDoe.balance + currency;
-document.getElementById("payAmount").innerHTML = johnDoe.pay + currency;
+workerBalanceAmount.innerHTML = johnDoe.balance + currency;
+payAmount.innerHTML = johnDoe.pay + currency;
 
 function loan() {
     let valueLoan = window.prompt("Add amount you wish to loan: ");
@@ -24,63 +34,104 @@ function loan() {
     // Append the loan amount row and store it to the user
     else if (valueLoan != null && valueLoan <= (johnDoe.balance * 2)) {
         // Show the loan amount block and update the value based on the loan
-        document.getElementById("workerLoan").style.visibility = "visible";
-        document.getElementById("workerLoanAmount").innerHTML = valueLoan + currency;
+        workerLoan.style.visibility = "visible";
+        workerLoanAmount.innerHTML = valueLoan + currency;
         johnDoe.loanAmount = valueLoan;
         // Update balance value based on the loan
         johnDoe.balance = parseInt(johnDoe.balance) + parseInt(valueLoan);
-        document.getElementById("workerBalanceAmount").innerHTML = johnDoe.balance + currency;
+        workerBalanceAmount.innerHTML = johnDoe.balance + currency;
         // Show the repay loan button in the work block
-        document.getElementById("repayLoan").style.visibility = "visible";
+        repayLoanButton.style.visibility = "visible";
     } else {
         alert("You don't have enough money in your account to take a loan that high!")
-    }   
+    }
 }
+
+// 2.1 Pay
+// The pay or your current salary amount in your currency. Should show how much money you have earned by
+// “working”. This money is NOT part of your bank balance.
+// 2.2 Bank Button
+// The bank button must transfer the money from your Pay/Salary balance to your Bank balance. Remember to reset
+// your pay/salary once you transfer.
+// Constraints on Bank button:
+// 1. If you have an outstanding loan, 10% of your salary MUST first be deducted and transferred to the
+// outstanding Loan amount
+// 2. The balance after the 10% deduction may be transferred to your bank account
+// 2.4 Repay Loan button
+// Once you have a loan, a new button labeled “Repay Loan” should appear. Upon clicking this button, the full value of
+// your current Pay amount should go towards the outstanding loan and NOT your bank account.
+// Any remaining funds after paying the loan may be transferred to your bank account
 
 function work() {
     // Update the pay value by 100 each time we click the "Work" button
     johnDoe.pay += 100;
-    document.getElementById("payAmount").innerHTML = johnDoe.pay + currency;
+    payAmount.innerHTML = johnDoe.pay + currency;
 }
 
 function deposit() {
-    
     // If no loan, add the value of Pay to your bank balance
-    if (johnDoe.loanAmount === 0) {
+    if (johnDoe.loanAmount <= 0) {
         johnDoe.balance += parseInt(johnDoe.pay);
-        document.getElementById("workerBalanceAmount").innerHTML = johnDoe.balance + currency;
+        workerBalanceAmount.innerHTML = johnDoe.balance + currency;
     } 
     else if (johnDoe.loanAmount > 0) {
         // 10% deduction on your loan if the user has an existing loan
         johnDoe.loanAmount -= parseInt(johnDoe.pay) * 0.1;
         // Add the remaining 90% to your balance
         johnDoe.balance += parseInt(johnDoe.pay) * 0.9;
-        document.getElementById("workerBalanceAmount").innerHTML = johnDoe.balance + currency;
-        document.getElementById("workerLoanAmount").innerHTML = johnDoe.loanAmount + currency;
+        workerBalanceAmount.innerHTML = johnDoe.balance + currency;
+        workerLoanAmount.innerHTML = johnDoe.loanAmount + currency;
         if (johnDoe.loanAmount === 0) {
-            document.getElementById("workerLoan").style.visibility = "hidden";
-            document.getElementById("repayLoan").style.visibility = "hidden";
+            workerLoan.style.visibility = "hidden";
+            repayLoanButton.style.visibility = "hidden";
         }
-
     }
     // Reset the value of Pay on the object and on the DOM
     johnDoe.pay = 0;
-    document.getElementById("payAmount").innerHTML = johnDoe.pay + currency;
+    payAmount.innerHTML = johnDoe.pay + currency;
 }
 
 function repayLoan () {
-    johnDoe.loanAmount -= parseInt(johnDoe.pay);
-    johnDoe.balance -= parseInt(johnDoe.pay);
-    document.getElementById("workerBalanceAmount").innerHTML = johnDoe.balance + currency;
-    document.getElementById("workerLoanAmount").innerHTML = johnDoe.loanAmount + currency;
-    if (johnDoe.loanAmount === 0) {
-        document.getElementById("workerLoan").style.visibility = "hidden";
-        document.getElementById("repayLoan").style.visibility = "hidden";
+    let repayAmount = 0;
+    if (johnDoe.pay >= johnDoe.loanAmount) {
+        repayAmount = johnDoe.loanAmount;
+        johnDoe.balance -= parseInt(repayAmount);
+        johnDoe.loanAmount -= parseInt(johnDoe.pay);
+        johnDoe.pay -= repayAmount;
+        workerBalanceAmount.innerHTML = johnDoe.balance + currency;
+        workerLoanAmount.innerHTML = johnDoe.loanAmount + currency;
+        payAmount.innerHTML = johnDoe.pay + currency;
+        if (johnDoe.loanAmount <= 0) {
+            workerLoan.style.visibility = "hidden";
+            repayLoanButton.style.visibility = "hidden";
+        }
+    } else {
+        johnDoe.balance -= parseInt(johnDoe.pay);
+        johnDoe.loanAmount -= parseInt(johnDoe.pay);
+        johnDoe.pay -= parseInt(johnDoe.pay);
+        workerBalanceAmount.innerHTML = johnDoe.balance + currency;
+        workerLoanAmount.innerHTML = johnDoe.loanAmount + currency;
+        payAmount.innerHTML = johnDoe.pay + currency;
     }
-    johnDoe.pay = 0;
-    document.getElementById("payAmount").innerHTML = johnDoe.pay + currency;
 }
 
+// 3.1 Laptop selection (Figure 3)
+// Use a select box to show the available computers. The feature list of the selected laptop must be displayed here.
+// Changing a laptop should update the user interface with the information for that selected laptop. 
+// 3.2 Info section (Figure 4)
+// The Info section is where the image, name, and description as well as the price of the laptop must be displayed.
+// 3.2.1 Images
+// The path to the image of a laptop can be found in the response. Remember to use the base URL WITHOUT the
+// computers path.
+// e.g., https://noroff-komputer-store-api.herokuapp.com/assets/images/1.png
+// 3.2.2 Buy Now button
+// The buy now button is the final action of your website. This button will attempt to “Buy” a laptop and validate
+// whether the bank balance is sufficient to purchase the selected laptop.
+// If you do not have enough money in the “Bank”, a message must be shown that you cannot afford the laptop.
+// When you have sufficient “Money” in the account, the amount must be deducted from the bank and you must
+// receive a message that you are now the owner of the new laptop!
+
+// https://noroff-komputer-store-api.herokuapp.com/computers
 
 function getAllLaptops () {
     fetch("https://noroff-komputer-store-api.herokuapp.com/computers")
@@ -92,9 +143,7 @@ function getAllLaptops () {
     }
 )}
     
-const lapTopSelect = document.getElementById("laptopSelect");
-const featureList = document.getElementById("featureList");
-const infoSection = document.getElementById("infoSection");
+
 
 function listLaptops (laptops) {
     // Loop through the array of laptops and create option keys for each laptop in the select-box
@@ -118,7 +167,7 @@ function listLaptops (laptops) {
                 infoOnLaptop(laptops[index2]);
             }
         }
-    })
+    });
 }
 
 function listFeatures (laptop) {
@@ -132,14 +181,56 @@ function listFeatures (laptop) {
 }
 
 function infoOnLaptop (laptop) {
+    //console.log(laptop.price);
     infoSection.innerHTML = "";
+    buySection.innerHTML = "";
+
+    // Section for adding image
     const imageTag = document.createElement("img");
     imageTag.id = "laptopImage";
-    imageTag.className = "img-fluid";
-    imageTag.style = "width: 40%";
+    imageTag.className = "img-fluid card-img-top";
+    imageTag.style = "width: 40%; display: block; margin-left: auto; margin-right: auto;";
     let imageUrl = "https://noroff-komputer-store-api.herokuapp.com/" + laptop.image;
     imageTag.src = imageUrl;
     infoSection.appendChild(imageTag);
+    //Section for adding description for laptop
+    const imageSection = document.createElement("div");
+    imageSection.className = "card-body";
+    infoSection.appendChild(imageSection);
+    const laptopDescription = document.createElement("H5");
+    laptopDescription.className = "card-text";
+    laptopDescription.innerText = laptop.description;
+    imageSection.appendChild(laptopDescription);
+
+    // Section for the price and buy button
+    const buyButton = document.createElement("button");
+    buyButton.className = "btn btn-primary";
+    buyButton.innerText = "BUY NOW";
+    buyButton.onclick = function(){buyComputer();};
+    const laptopPrice = document.createElement("H3");
+    laptopPrice.id = "laptopPrice";
+    laptopPrice.innerText = laptop.price + currency;
+    buySection.appendChild(laptopPrice);
+    buySection.appendChild(buyButton);
+}
+
+// 3.2.2 Buy Now button
+// The buy now button is the final action of your website. This button will attempt to “Buy” a laptop and validate
+// whether the bank balance is sufficient to purchase the selected laptop.
+// If you do not have enough money in the “Bank”, a message must be shown that you cannot afford the laptop.
+// When you have sufficient “Money” in the account, the amount must be deducted from the bank and you must
+// receive a message that you are now the owner of the new laptop!
+
+function buyComputer () {
+    let laptopValue = parseInt(document.getElementById("laptopPrice").innerText);
+    console.log(laptopValue);
+    if(johnDoe.balance < laptopValue) {
+        alert("You have insufficient funds to purchase this computer!");
+    } else {
+        alert("You have purchased the computer!");
+        johnDoe.balance -= laptopValue;
+        workerBalanceAmount.innerHTML = johnDoe.balance + currency;
+    }
 
 }
 
