@@ -166,6 +166,10 @@ function infoOnLaptop (laptop) {
     imageTag.id = "laptopImage";
     imageTag.className = "img-fluid card-img-top";
     imageTag.style = "width: 40%; display: block; margin-left: auto; margin-right: auto;";
+    console.log(laptop.image);
+    if (laptop.image == "assets/images/5.jpg") {
+        laptop.image = laptop.image.replace("jpg", "png");
+    }
     imageTag.src = "https://noroff-komputer-store-api.herokuapp.com/" + laptop.image;
     infoSection.appendChild(imageTag);
 
