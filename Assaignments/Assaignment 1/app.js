@@ -5,7 +5,7 @@ function Worker(name, balance, pay, loanAmount) {
     this.loanAmount = loanAmount;
 }
 
-const johnDoe = new Worker('John Doe', 100000, 0, 0);
+const johnDoe = new Worker('John Doe', 0, 0, 0);
 const lapTopSelect = document.getElementById("laptopSelect");
 const featureList = document.getElementById("featureList");
 const infoSection = document.getElementById("infoSection");
@@ -49,21 +49,6 @@ function loan() {
     }
 }
 
-// 2.1 Pay
-// The pay or your current salary amount in your currency. Should show how much money you have earned by
-// “working”. This money is NOT part of your bank balance.
-// 2.2 Bank Button
-// The bank button must transfer the money from your Pay/Salary balance to your Bank balance. Remember to reset
-// your pay/salary once you transfer.
-// Constraints on Bank button:
-// 1. If you have an outstanding loan, 10% of your salary MUST first be deducted and transferred to the
-// outstanding Loan amount
-// 2. The balance after the 10% deduction may be transferred to your bank account
-// 2.4 Repay Loan button
-// Once you have a loan, a new button labeled “Repay Loan” should appear. Upon clicking this button, the full value of
-// your current Pay amount should go towards the outstanding loan and NOT your bank account.
-// Any remaining funds after paying the loan may be transferred to your bank account
-
 function work() {
     // Update the pay value by 100 each time we click the "Work" button
     johnDoe.pay += 100;
@@ -98,6 +83,8 @@ function deposit() {
 
 function repayLoan () {
     let repayAmount = 0;
+    // If we have a loan and we have more money on pay that we use to repay the loan, 
+    // We pay back the loan, adjust the balance value and the rest of the pay value may be used to transfer to you account
     if (johnDoe.pay >= johnDoe.loanAmount) {
         repayAmount = johnDoe.loanAmount;
         johnDoe.balance -= parseInt(repayAmount);
@@ -110,7 +97,8 @@ function repayLoan () {
             workerLoan.style.visibility = "hidden";
             repayLoanButton.style.visibility = "hidden";
         }
-    } else {
+    } 
+    else {
         johnDoe.balance -= parseInt(johnDoe.pay);
         johnDoe.loanAmount -= parseInt(johnDoe.pay);
         johnDoe.pay -= parseInt(johnDoe.pay);
@@ -119,24 +107,6 @@ function repayLoan () {
         payAmount.innerHTML = johnDoe.pay + currency;
     }
 }
-
-// 3.1 Laptop selection (Figure 3)
-// Use a select box to show the available computers. The feature list of the selected laptop must be displayed here.
-// Changing a laptop should update the user interface with the information for that selected laptop. 
-// 3.2 Info section (Figure 4)
-// The Info section is where the image, name, and description as well as the price of the laptop must be displayed.
-// 3.2.1 Images
-// The path to the image of a laptop can be found in the response. Remember to use the base URL WITHOUT the
-// computers path.
-// e.g., https://noroff-komputer-store-api.herokuapp.com/assets/images/1.png
-// 3.2.2 Buy Now button
-// The buy now button is the final action of your website. This button will attempt to “Buy” a laptop and validate
-// whether the bank balance is sufficient to purchase the selected laptop.
-// If you do not have enough money in the “Bank”, a message must be shown that you cannot afford the laptop.
-// When you have sufficient “Money” in the account, the amount must be deducted from the bank and you must
-// receive a message that you are now the owner of the new laptop!
-
-// https://noroff-komputer-store-api.herokuapp.com/computers
 
 function getAllLaptops () {
     fetch("https://noroff-komputer-store-api.herokuapp.com/computers")
@@ -163,7 +133,7 @@ function listLaptops (laptops) {
         listFeatures(laptops[0])
         infoOnLaptop(laptops[0]);
     }
-    // We listen to a change of value in the selectbox. If it changes, we invoke listFeatures and InfoOnLaptop functions (passing on the object) and change the features based on the laptop chosen
+    // We listen to a change of value in the select-box. If it changes, we invoke listFeatures and InfoOnLaptop functions (passing on the object) and change the features based on the laptop chosen
     lapTopSelect.addEventListener("change", function() {
         featureList.innerHTML = "";
         for (let index2 = 0; index2 < laptops.length; index2++) {
@@ -185,17 +155,20 @@ function listFeatures (laptop) {
 }
 
 function infoOnLaptop (laptop) {
-    //console.log(laptop.price);
     infoSection.innerHTML = "";
     buySection.innerHTML = "";
 
     // Section for adding image
+    const laptopName = document.createElement("H1");
+    laptopName.innerText = laptop.title;
+    infoSection.appendChild(laptopName);
     const imageTag = document.createElement("img");
     imageTag.id = "laptopImage";
     imageTag.className = "img-fluid card-img-top";
     imageTag.style = "width: 40%; display: block; margin-left: auto; margin-right: auto;";
     imageTag.src = "https://noroff-komputer-store-api.herokuapp.com/" + laptop.image;
     infoSection.appendChild(imageTag);
+
     //Section for adding description for laptop
     const imageSection = document.createElement("div");
     imageSection.className = "card-body";
@@ -216,13 +189,6 @@ function infoOnLaptop (laptop) {
     buySection.appendChild(laptopPrice);
     buySection.appendChild(buyButton);
 }
-
-// 3.2.2 Buy Now button
-// The buy now button is the final action of your website. This button will attempt to “Buy” a laptop and validate
-// whether the bank balance is sufficient to purchase the selected laptop.
-// If you do not have enough money in the “Bank”, a message must be shown that you cannot afford the laptop.
-// When you have sufficient “Money” in the account, the amount must be deducted from the bank and you must
-// receive a message that you are now the owner of the new laptop!
 
 function buyComputer () {
     let laptopValue = parseInt(document.getElementById("laptopPrice").innerText);

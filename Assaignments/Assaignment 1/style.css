@@ -1,3 +1,10 @@
+/* Tags */
+section {
+  background-color: #ECEAEA;
+}
+
+/* ID's */
+
 #computerStore {
   position: relative;
   background-color: GREY;
@@ -33,7 +40,7 @@
   float: right;
 }
 
-#title {
+#label {
   text-align: center;
 }
 
@@ -71,6 +78,11 @@
   text-align: center;
 }
 
+#infoSection h1 {
+  background-color: #ECEAEA;
+  text-align: center;
+}
+
 #workerLoan {
   visibility: hidden;
 }
@@ -79,7 +91,13 @@
   text-align: center;
 }
 
+/* Classes */
+
 .card-img-top {
   max-height: 30vh; /*not want to take all vertical space*/
   object-fit: contain;/*show all image, autosized, no cut, in available space*/
+}
+
+.card-body {
+  background-color: #ECEAEA;
 }
