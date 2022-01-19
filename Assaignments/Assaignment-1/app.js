@@ -5,7 +5,10 @@ function Worker(name, balance, pay, loanAmount) {
     this.loanAmount = loanAmount;
 }
 
+// Instantiate an object when the page loads
 const johnDoe = new Worker('John Doe', 0, 0, 0);
+
+// Constant variables for DOM-elements to be manipulated
 const lapTopSelect = document.getElementById("laptopSelect");
 const featureList = document.getElementById("featureList");
 const infoSection = document.getElementById("infoSection");
@@ -21,6 +24,7 @@ const currency = " kr";
 workerBalanceAmount.innerHTML = johnDoe.balance + currency;
 payAmount.innerHTML = johnDoe.pay + currency;
 
+// Function for taking a loan
 function loan() {
     let valueLoan = window.prompt("Add amount you wish to loan: ");
     console.log(valueLoan);
@@ -49,12 +53,14 @@ function loan() {
     }
 }
 
+// Function for adding pay
 function work() {
     // Update the pay value by 100 each time we click the "Work" button
     johnDoe.pay += 100;
     payAmount.innerHTML = johnDoe.pay + currency;
 }
 
+// Function for deposit pay to your bank-account 
 function deposit() {
     const deductionForLoanFactor = 0.1;
     // If no loan, add the value of Pay to your bank balance
@@ -62,6 +68,7 @@ function deposit() {
         johnDoe.balance += parseInt(johnDoe.pay);
         workerBalanceAmount.innerHTML = johnDoe.balance + currency;
     } 
+    // IF there is a loanamount
     else if (johnDoe.loanAmount > 0) {
         // 10% deduction on your loan if the user has an existing loan
         johnDoe.loanAmount -= parseInt(johnDoe.pay) * deductionForLoanFactor;
@@ -71,6 +78,7 @@ function deposit() {
         johnDoe.balance += parseInt(johnDoe.pay);
         workerBalanceAmount.innerHTML = johnDoe.balance + currency;
         workerLoanAmount.innerHTML = johnDoe.loanAmount + currency;
+        // If you don't have a loan, hide the tags providing the info regarding loan
         if (johnDoe.loanAmount <= 0) {
             workerLoan.style.visibility = "hidden";
             repayLoanButton.style.visibility = "hidden";
@@ -84,7 +92,7 @@ function deposit() {
 function repayLoan () {
     let repayAmount = 0;
     // If we have a loan and we have more money on pay that we use to repay the loan, 
-    // We pay back the loan, adjust the balance value and the rest of the pay value may be used to transfer to you account
+    // We pay back the loan, adjust the loan amount and balance value and the rest of the pay value may be used to transfer to you account
     if (johnDoe.pay >= johnDoe.loanAmount) {
         repayAmount = johnDoe.loanAmount;
         johnDoe.balance -= parseInt(repayAmount);
@@ -93,11 +101,14 @@ function repayLoan () {
         workerBalanceAmount.innerHTML = johnDoe.balance + currency;
         workerLoanAmount.innerHTML = johnDoe.loanAmount + currency;
         payAmount.innerHTML = johnDoe.pay + currency;
+        // When the entire loan has been payed back, hide the tags providing the info regarding loan
         if (johnDoe.loanAmount <= 0) {
             workerLoan.style.visibility = "hidden";
             repayLoanButton.style.visibility = "hidden";
         }
     } 
+    // If you have lower or equal amount of pay
+    // reduce the amount of the loan and the balance based on pay
     else {
         johnDoe.balance -= parseInt(johnDoe.pay);
         johnDoe.loanAmount -= parseInt(johnDoe.pay);
@@ -133,7 +144,8 @@ function listLaptops (laptops) {
         listFeatures(laptops[0])
         infoOnLaptop(laptops[0]);
     }
-    // We listen to a change of value in the select-box. If it changes, we invoke listFeatures and InfoOnLaptop functions (passing on the object) and change the features based on the laptop chosen
+    // We listen to a change of value in the select-box. If it changes, we invoke listFeatures and InfoOnLaptop functions (passing on the object) 
+    // and change the features based on the laptop chosen
     lapTopSelect.addEventListener("change", function() {
         featureList.innerHTML = "";
         for (let index2 = 0; index2 < laptops.length; index2++) {
@@ -146,6 +158,7 @@ function listLaptops (laptops) {
 }
 
 function listFeatures (laptop) {
+    // Loop through the laptop object's features and create a list on the DOM
     for (let spec = 0; spec < laptop.specs.length; spec++) {
         let feature = laptop.specs[spec];
         const lapTopFeature = document.createElement("li");
@@ -167,6 +180,8 @@ function infoOnLaptop (laptop) {
     imageTag.className = "img-fluid card-img-top";
     imageTag.style = "width: 40%; display: block; margin-left: auto; margin-right: auto;";
     console.log(laptop.image);
+    // Making sure that we provide the correct image on "The Visor object"
+    // with replacing .jpg to .png on the url 
     if (laptop.image == "assets/images/5.jpg") {
         laptop.image = laptop.image.replace("jpg", "png");
     }
@@ -196,10 +211,10 @@ function infoOnLaptop (laptop) {
 
 function buyComputer () {
     let laptopValue = parseInt(document.getElementById("laptopPrice").innerText);
-    console.log(laptopValue);
     if(johnDoe.balance < laptopValue) {
         alert("You have insufficient funds to purchase this computer!");
-    } else {
+    } 
+    else {
         alert("You have purchased the computer!");
         johnDoe.balance -= laptopValue;
         workerBalanceAmount.innerHTML = johnDoe.balance + currency;
