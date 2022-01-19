@@ -1,6 +1,9 @@
 # Assaignment-Noroff
 
 ## Assignments URLs
+Assaigment 1: 
+https://sebastianborjesson.github.io/Assaignment-Noroff/Assaignments/Assaignment-1/
+Use the link to browse to the github page
 
 ### Katas URLs
 1. https://sebastianborjesson.github.io/Assaignment-Noroff/Katas/basketball-points/
